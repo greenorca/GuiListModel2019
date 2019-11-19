@@ -76,11 +76,7 @@ public class MyGui extends JFrame {
 		contentPane.add(panel, BorderLayout.NORTH);
 		
 		JButton btnNewButton = new JButton("Generiere");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				fillDummyData();
-			}
-		});
+	
 		panel.add(btnNewButton);
 		
 		lblFilter = new JLabel("Filter");
