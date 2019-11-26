@@ -91,7 +91,29 @@ public class MyGui extends JFrame {
 		
 		comboBox = new JComboBox<String>();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Alle", "Studenten", "Personal", "Dozenten"}));
-		
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(comboBox.getSelectedItem());
+				
+				PersonListModel.Filter filter = new PersonListModel.Filter() {
+			        public boolean accept(Person p) {
+			        	String filterString = (String)comboBox.getSelectedItem();
+			        	if (filterString.contentEquals("Alle"))
+			        		return true;
+			        	if (filterString.endsWith("en"))
+			        		filterString = filterString.substring(0, filterString.length()-2);
+			        	System.out.println(filterString);
+			        	boolean result = (p.getClass().getSimpleName().equals(filterString) ||
+										p.getClass().getSuperclass().
+											getSimpleName().equals(filterString));
+						return result;
+						
+			        }
+			    };
+				
+				allePersonenModell.setFilter(filter);
+			}
+		});
 		panel.add(comboBox);
 		
 		lblSuchstringname = new JLabel("Suchstring");
@@ -102,7 +124,23 @@ public class MyGui extends JFrame {
 		textField.setColumns(10);
 		
 		btnFiltern = new JButton("Filtern");
-		
+		btnFiltern.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PersonListModel.Filter filter = new PersonListModel.Filter() {
+					
+					@Override
+					public boolean accept(Person person) {
+						// TODO Auto-generated method stub
+						String suchstring = textField.getText().toLowerCase();
+						String nameKleinGeschrieben = person.getName().toLowerCase();
+						return nameKleinGeschrieben.startsWith(suchstring);
+					}
+				};
+				
+				allePersonenModell.setFilter(filter);
+				
+			}
+		});
 		panel.add(btnFiltern);
 		
 		allePersonenModell = new PersonListModel();
