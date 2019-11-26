@@ -13,6 +13,7 @@ import javax.swing.event.ListSelectionListener;
 import model.AdminPersonal;
 import model.Dozent;
 import model.Person;
+import model.PersonListModel;
 import model.Student;
 
 import javax.swing.JButton;
@@ -36,7 +37,7 @@ public class MyGui extends JFrame {
 
 	private JPanel contentPane;
 	private JList<Person> list;
-	private DefaultListModel allePersonenModell;
+	private PersonListModel allePersonenModell;
 	private JLabel lblFilter;
 	private JComboBox<String> comboBox;
 	private PersonPanel infoPanel;
@@ -76,7 +77,13 @@ public class MyGui extends JFrame {
 		contentPane.add(panel, BorderLayout.NORTH);
 		
 		JButton btnNewButton = new JButton("Generiere");
-	
+		btnNewButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fillDummyData();				
+			}
+		});
 		panel.add(btnNewButton);
 		
 		lblFilter = new JLabel("Filter");
@@ -98,7 +105,7 @@ public class MyGui extends JFrame {
 		
 		panel.add(btnFiltern);
 		
-		allePersonenModell = new DefaultListModel();
+		allePersonenModell = new PersonListModel();
 		
 		list = new JList<Person>(allePersonenModell);
 		list.addListSelectionListener(new ListSelectionListener() {			
